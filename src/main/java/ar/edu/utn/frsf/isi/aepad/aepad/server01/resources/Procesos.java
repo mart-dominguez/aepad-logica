@@ -5,6 +5,7 @@
  */
 package ar.edu.utn.frsf.isi.aepad.aepad.server01.resources;
 
+import ar.edu.utn.frsf.isi.aepad.aepad.server01.dto.ErrorDTO;
 import ar.edu.utn.frsf.isi.aepad.aepad.server01.dto.HistorialDTO;
 import ar.edu.utn.frsf.isi.aepad.aepad.server01.modelo.Empleado;
 import ar.edu.utn.frsf.isi.aepad.aepad.server01.modelo.InfoResult;
@@ -65,8 +66,8 @@ public class Procesos {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/liquidar/{id}")
     public Response doAlgo2(@PathParam("id") Integer idEmpleado) {
-        Map<String, String> resultado = new HashMap<>();
-        resultado.put("mensaje", "ok");
+        ErrorDTO resultado = new ErrorDTO();
+        resultado.setMensaje("ok");
         try {
             Random r = new Random();
             Calendar d1 = Calendar.getInstance();
@@ -89,11 +90,11 @@ public class Procesos {
             emp.getSalarios().add(sal2);
             Empleado emp2 = em.merge(emp);
         } catch (Exception e) {
-            resultado.put("mensaje", e.getMessage());
-            resultado.put("detalle", e.getLocalizedMessage());
+            resultado.setMensaje(e.getMessage());
+            resultado.setDetalle(e.getLocalizedMessage());
             StringWriter errors = new StringWriter();
             e.printStackTrace(new PrintWriter(errors));
-            resultado.put("pila", errors.toString());
+            resultado.setPila(errors.toString());
         }
         return Response.ok(resultado).build();
     }
